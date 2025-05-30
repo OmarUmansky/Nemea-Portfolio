@@ -3,6 +3,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaPlay, FaPause, FaVolumeUp, FaVolumeMute, FaMusic, FaTimes } from 'react-icons/fa';
 
+// Declarar la interfaz para el window con webkitAudioContext
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}
+
 const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -95,24 +102,24 @@ const AudioPlayer = () => {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        // Crear un nuevo contexto de audio si es necesario
-        if (!window.AudioContext && !window.webkitAudioContext) {
-          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-          new AudioContext();
-        }
-
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setIsPlaying(true);
-              setError(null);
-            })
-            .catch((error) => {
-              console.error('Error al reproducir:', error);
-              setIsPlaying(false);
-              setError('Error al reproducir el audio');
-            });
+        try {
+          // Intentar reproducir directamente sin crear un AudioContext
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsPlaying(true);
+                setError(null);
+              })
+              .catch((error) => {
+                console.error('Error al reproducir:', error);
+                setIsPlaying(false);
+                setError('Error al reproducir el audio');
+              });
+          }
+        } catch (error) {
+          console.error('Error en togglePlay:', error);
+          setError('Error al controlar la reproducción');
         }
       }
       localStorage.setItem('backgroundMusicPlaying', (!isPlaying).toString());
