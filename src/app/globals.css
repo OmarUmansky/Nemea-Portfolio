@@ -872,7 +872,7 @@ body::before {
     rgba(255, 0, 255, 0.5)
   );
   filter: blur(15px);
-  opacity: 0;
+    opacity: 0;
   animation: logo-pulse 2s ease-in-out infinite;
   border-radius: 50%;
   z-index: -1;

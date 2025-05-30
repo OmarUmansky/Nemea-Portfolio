@@ -8,12 +8,10 @@ import SecretCharacter from '@/components/SecretCharacter';
 import Butterfly from '@/components/Butterfly';
 import ParticleSystem from '@/components/ParticleSystem';
 import FunFactsPanel from '@/components/FunFactsPanel';
-import SecretPanel from '@/components/SecretPanel';
 
 export default function Home() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isFunFactsOpen, setIsFunFactsOpen] = useState(false);
-  const [isSecretPanelVisible, setIsSecretPanelVisible] = useState(false);
 
   useEffect(() => {
     const observerOptions = {
@@ -43,7 +41,7 @@ export default function Home() {
       <ParticleSystem />
       
       {/* Secret Character */}
-      <SecretCharacter onSecretFound={() => setIsSecretPanelVisible(true)} />
+      <SecretCharacter />
       
       {/* Contact Modal */}
       <ContactModal 
@@ -288,9 +286,6 @@ export default function Home() {
 
       {/* Fun Facts Panel */}
       <FunFactsPanel isOpen={isFunFactsOpen} onClose={() => setIsFunFactsOpen(false)} />
-
-      {/* Secret Panel */}
-      <SecretPanel isVisible={isSecretPanelVisible} onClose={() => setIsSecretPanelVisible(false)} />
 
       {/* Portfolio Section */}
       <Portfolio />
